@@ -17,4 +17,5 @@ Rx.Observable.combineLatest(timerOne, timerTwo, (one, two) => {
 /*  
 Note: 
 combineLatest 直到每个 observable 都至少发出一个值后才会发出初始值。
+个人感觉，比withLatestFrom更好一些，后者是实例方法，有侧重~
 */

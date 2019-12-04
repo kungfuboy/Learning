@@ -1,20 +1,15 @@
-const Rx = require("rxjs/Rx");
+const Rx = require("rxjs");
+const { distinctUntilChanged } = require("rxjs/operators");
 
-const timerOne = Rx.Observable.timer(1000, 1000);
-const timerTwo = Rx.Observable.timer(1000, 4000);
-
-Rx.Observable.combineLatest(timerOne, timerTwo).subscribe(latestValues => {
-  const [one, two] = latestValues;
-  //   console.log(one, two);
-});
-
-Rx.Observable.combineLatest(timerOne, timerTwo, (one, two) => {
-  return `${one}, ${two}`;
-}).subscribe(latestValues => {
-  console.log(latestValues);
-});
-
-/*  
-Note: 
-combineLatest 直到每个 observable 都至少发出一个值后才会发出初始值。
-*/
+const sampleObject = { name: "Test" };
+// 对象必须有相同的引用
+const myArrayWithDuplicateObjects = Rx.from([
+  sampleObject,
+  sampleObject,
+  sampleObject
+]);
+// 基于最新发出的值进行比较，只输出不同的对象
+myArrayWithDuplicateObjects
+  .pipe(distinctUntilChanged())
+  // 输出: 'DISTINCT OBJECTS: {name: 'Test'}
+  .subscribe(val => console.log("DISTINCT OBJECTS:", val));
